@@ -8,6 +8,7 @@ import {
   createMuiTheme,
   ThemeProvider,
 } from "@material-ui/core";
+import SignIn from "./pages/SignIn/SignIn";
 const useStyles = makeStyles((theme) => ({
   content: {
     flexGrow: 1,
@@ -46,6 +47,13 @@ function App() {
 
   const [drawerOpen, setDrawerOpen] = React.useState(true);
 
+  const [logedIn, setLogedIn] = React.useState(false);
+  if (!logedIn)
+    return (
+      <ThemeProvider theme={theme}>
+        <SignIn />
+      </ThemeProvider>
+    );
   return (
     <ThemeProvider theme={theme}>
       <MenuBar drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} />
