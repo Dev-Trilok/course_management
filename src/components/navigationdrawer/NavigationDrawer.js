@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function NavigationDrawer({ open }) {
+export default function NavigationDrawer({ open, user }) {
   const classes = useStyles();
 
   return (

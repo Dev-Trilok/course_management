@@ -45,19 +45,31 @@ function App() {
     [prefersDarkMode]
   );
 
-  const [drawerOpen, setDrawerOpen] = React.useState(true);
+  const [drawerOpen, setDrawerOpen] = React.useState(false);
+  const [user, setUser] = React.useState(null);
 
-  const [logedIn, setLogedIn] = React.useState(false);
-  if (!logedIn)
+  React.useEffect(() => {
+    const loggedInUser = localStorage.getItem("user");
+    if (loggedInUser) {
+      const foundUser = JSON.parse(loggedInUser);
+      setUser(foundUser);
+    }
+  }, []);
+
+  if (!user)
     return (
       <ThemeProvider theme={theme}>
-        <SignIn />
+        <SignIn setUser={setUser} />
       </ThemeProvider>
     );
   return (
     <ThemeProvider theme={theme}>
-      <MenuBar drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} />
-      <NavigationDrawer open={drawerOpen} setOpen={setDrawerOpen} />
+      <MenuBar
+        drawerOpen={drawerOpen}
+        user={user}
+        setDrawerOpen={setDrawerOpen}
+      />
+      <NavigationDrawer open={drawerOpen} user={user} setOpen={setDrawerOpen} />
       <main
         className={clsx(classes.content, {
           [classes.contentShift]: drawerOpen,
