@@ -9,6 +9,9 @@ import {
   ThemeProvider,
 } from "@material-ui/core";
 import SignIn from "./pages/SignIn/SignIn";
+import StaffDashboard from "./pages/StaffDashboard/StaffDashboard";
+import StudentDashboard from "./pages/StudentDashboard/StudentDashboard";
+import AdminDashboard from "./pages/AdminDashboard/AdminDashboard";
 const useStyles = makeStyles((theme) => ({
   content: {
     flexGrow: 1,
@@ -44,8 +47,6 @@ function App() {
       }),
     [prefersDarkMode]
   );
-
-  const [drawerOpen, setDrawerOpen] = React.useState(false);
   const [user, setUser] = React.useState(null);
 
   React.useEffect(() => {
@@ -62,19 +63,12 @@ function App() {
         <SignIn setUser={setUser} />
       </ThemeProvider>
     );
+
   return (
     <ThemeProvider theme={theme}>
-      <MenuBar
-        drawerOpen={drawerOpen}
-        user={user}
-        setDrawerOpen={setDrawerOpen}
-      />
-      <NavigationDrawer open={drawerOpen} user={user} setOpen={setDrawerOpen} />
-      <main
-        className={clsx(classes.content, {
-          [classes.contentShift]: drawerOpen,
-        })}
-      ></main>
+      {user.role === "staff" && <StaffDashboard user={user} />}
+      {user.role === "admin" && <AdminDashboard user={user} />}
+      {user.role === "student" && <StudentDashboard user={user} />}
     </ThemeProvider>
   );
 }
