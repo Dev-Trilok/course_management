@@ -3,6 +3,7 @@ import clsx from "clsx";
 import { makeStyles } from "@material-ui/core";
 import MenuBar from "../../components/menubar/MenuBar";
 import NavigationDrawer from "../../components/navigationdrawer/NavigationDrawer";
+import UserContext from "../../context/UserContext";
 const useStyles = makeStyles((theme) => ({
   content: {
     flexGrow: 1,
@@ -40,7 +41,9 @@ export default function StaffDashboard({ user }) {
         className={clsx(classes.content, {
           [classes.contentShift]: drawerOpen,
         })}
-      ></main>
+      >
+        Staff Dashboard
+      </main>
     </div>
   );
 }

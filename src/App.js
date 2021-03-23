@@ -12,6 +12,8 @@ import SignIn from "./pages/SignIn/SignIn";
 import StaffDashboard from "./pages/StaffDashboard/StaffDashboard";
 import StudentDashboard from "./pages/StudentDashboard/StudentDashboard";
 import AdminDashboard from "./pages/AdminDashboard/AdminDashboard";
+import UserContext from "./context/UserContext";
+import FirebaseApp from "./firebase";
 const useStyles = makeStyles((theme) => ({
   content: {
     flexGrow: 1,
@@ -53,10 +55,28 @@ function App() {
     const loggedInUser = localStorage.getItem("user");
     if (loggedInUser) {
       const foundUser = JSON.parse(loggedInUser);
+      updateUser(foundUser);
       setUser(foundUser);
     }
   }, []);
 
+  const updateUser = (foundUser) => {
+    const db = FirebaseApp.firestore();
+    db.collection("users")
+      .where("username", "==", foundUser.username)
+      .where("password", "==", foundUser.password)
+      .get()
+      .then((querySnapshot) => {
+        if (!querySnapshot.empty)
+          querySnapshot.forEach((doc) => {
+            localStorage.setItem("user", JSON.stringify(doc.data()));
+            setUser(doc.data());
+          });
+      })
+      .catch((error) => {
+        console.log("Error getting documents: ", error);
+      });
+  };
   if (!user)
     return (
       <ThemeProvider theme={theme}>
@@ -66,9 +86,11 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      {user.role === "staff" && <StaffDashboard user={user} />}
-      {user.role === "admin" && <AdminDashboard user={user} />}
-      {user.role === "student" && <StudentDashboard user={user} />}
+      <UserContext.Provider value={user}>
+        {user.role === "staff" && <StaffDashboard user={user} />}
+        {user.role === "admin" && <AdminDashboard user={user} />}
+        {user.role === "student" && <StudentDashboard user={user} />}
+      </UserContext.Provider>
     </ThemeProvider>
   );
 }

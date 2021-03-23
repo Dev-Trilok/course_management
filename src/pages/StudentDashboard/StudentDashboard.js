@@ -3,6 +3,13 @@ import clsx from "clsx";
 import { makeStyles } from "@material-ui/core";
 import MenuBar from "../../components/menubar/MenuBar";
 import NavigationDrawer from "../../components/navigationdrawer/NavigationDrawer";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import Courses from "./Pages/Courses";
+import Resources from "./Pages/Resources";
+import HomeIcon from "@material-ui/icons/Home";
+import MenuBookIcon from "@material-ui/icons/MenuBook";
+import LibraryBooksIcon from "@material-ui/icons/LibraryBooks";
+import Dashboard from "./Pages/Dashboard";
 const useStyles = makeStyles((theme) => ({
   content: {
     flexGrow: 1,
@@ -30,19 +37,56 @@ export default function StudentDashboard({ user }) {
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   return (
     <div>
-      <MenuBar
-        drawerOpen={drawerOpen}
-        user={user}
-        setDrawerOpen={setDrawerOpen}
-      />
-      <NavigationDrawer open={drawerOpen} user={user} setOpen={setDrawerOpen} />
-      <main
-        className={clsx(classes.content, {
-          [classes.contentShift]: drawerOpen,
-        })}
-      >
-        Student Dashboard
-      </main>
+      <Router>
+        <MenuBar
+          drawerOpen={drawerOpen}
+          user={user}
+          setDrawerOpen={setDrawerOpen}
+        />
+        <NavigationDrawer
+          open={drawerOpen}
+          menus={Menus}
+          user={user}
+          setOpen={setDrawerOpen}
+        ></NavigationDrawer>
+        <main
+          className={clsx(classes.content, {
+            [classes.contentShift]: drawerOpen,
+          })}
+        >
+          <div>
+            <Switch>
+              <Route path="/mycourses">
+                <Courses user={user} />
+              </Route>
+              <Route path="/resources">
+                <Resources user={user} />
+              </Route>
+              <Route path="/">
+                <Dashboard user={user} />
+              </Route>
+            </Switch>
+          </div>
+        </main>
+      </Router>
     </div>
   );
 }
+
+const Menus = [
+  {
+    name: "Home",
+    path: "/",
+    icon: <HomeIcon />,
+  },
+  {
+    name: "My Courses",
+    path: "/mycourses",
+    icon: <MenuBookIcon />,
+  },
+  {
+    name: "Resources",
+    path: "/resources",
+    icon: <LibraryBooksIcon />,
+  },
+];
