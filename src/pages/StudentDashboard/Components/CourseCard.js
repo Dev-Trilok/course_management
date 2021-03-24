@@ -26,7 +26,7 @@ export default function CourseCard({ id }) {
       .then((data) => {
         if (data.exists) setCourse(data.data());
       });
-  }, []);
+  }, [id]);
 
   if (course === null) {
     return (

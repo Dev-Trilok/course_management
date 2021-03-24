@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core";
 import MenuBar from "../../components/menubar/MenuBar";
@@ -12,6 +12,8 @@ import Students from "./Pages/Students";
 import Dashboard from "./Pages/Dashboard";
 import Courses from "./Pages/Courses";
 import Staff from "./Pages/Staff";
+import FirebaseApp from "../../firebase";
+
 const useStyles = makeStyles((theme) => ({
   content: {
     flexGrow: 1,
@@ -58,10 +60,18 @@ export default function AdminDashboard({ user }) {
         >
           <div>
             <Switch>
-              <Route path="/courses"><Courses user={user} /></Route>
-              <Route path="/staff"><Staff user={user} /></Route>
-              <Route path="/student"><Students user={user} /></Route>
-              <Route path="/"><Dashboard user={user} /></Route>
+              <Route path="/courses">
+                <Courses user={user} />
+              </Route>
+              <Route path="/staff">
+                <Staff user={user} />
+              </Route>
+              <Route path="/student">
+                <Students user={user} />
+              </Route>
+              <Route path="/">
+                <Dashboard user={user} />
+              </Route>
             </Switch>
           </div>
         </main>
