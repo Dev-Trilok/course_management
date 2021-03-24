@@ -81,7 +81,7 @@ export default function SignIn({ setUser }) {
     <Container component="main" maxWidth="xs">
       <Snackbar
         open={hasError}
-        autoHideDuration={6000}
+        autoHideDuration={4000}
         onClose={handleErrorClose}
       >
         <Alert onClose={handleErrorClose} severity="error">
