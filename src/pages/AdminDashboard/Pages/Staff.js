@@ -3,11 +3,14 @@ import FirebaseApp from "../../../firebase";
 import { DataGrid, GridColDef } from "@material-ui/data-grid";
 import EditStaffDialog from "../Components/EditStaffDialog";
 import AddStaffDialog from "../Components/AddStaffDialog";
+import { Button, Typography } from "@material-ui/core";
 
 const db = FirebaseApp.firestore();
+
 export default function Staff() {
   const [data, setData] = useState([]);
-  const [selectedId, setSelectedId] = useState(null);
+  const [openAddStaff, setOpenAddStaff] = useState(false);
+  const [selectedId, setSelectedId] = useState([]);
   const [openEditStaffDialog, setOpenEditStaffDialog] = useState(false);
   const [selectedIds, setSelectedIds] = useState([]);
   React.useEffect(() => {
@@ -18,7 +21,6 @@ export default function Staff() {
         d.push(r.data());
       });
       setData(d);
-      console.log(qs.size);
     });
     return function cleanup() {
       unsub();
@@ -28,6 +30,9 @@ export default function Staff() {
     { field: "id", headerName: "Id", width: 100 },
     { field: "name", headerName: "Name", width: 150 },
     { field: "username", headerName: "Username", width: 150 },
+    { field: "email", headerName: "Email Id", width: 150 },
+    { field: "department", headerName: "Department", width: 150 },
+    { field: "blocked", headerName: "Blocked", width: 150 },
   ];
   const handleRowSelected = (e) => {
     setSelectedIds(e.selectionModel);
@@ -39,20 +44,65 @@ export default function Staff() {
   return (
     <div>
       <div style={{ height: "80vh", width: "100%" }}>
+        <Typography variant="h6" gutterBottom>
+          Staffs Details :
+        </Typography>
+
         <DataGrid
           checkboxSelection
           disableSelectionOnClick
           columns={columns}
           rows={data}
           onSelectionModelChange={handleRowSelected}
-          onRowClick={handleRowClick}
+          // onRowClick={handleRowClick}
         />
       </div>
-      <AddStaffDialog
-        open={openEditStaffDialog}
-        setOpen={setOpenEditStaffDialog}
-        id={selectedId}
-      />
+
+      {openEditStaffDialog && (
+        <EditStaffDialog
+          open={openEditStaffDialog}
+          setOpen={setOpenEditStaffDialog}
+          id={selectedId}
+        />
+      )}
+      <AddStaffDialog open={openAddStaff} setOpen={setOpenAddStaff} />
+      <br />
+      <br />
+      <div style={{ textAlign: "center" }}>
+        <Button
+          variant="contained"
+          onClick={() => {
+            setOpenAddStaff(true);
+          }}
+          color="primary"
+        >
+          Add New
+        </Button>
+        <Button
+          style={{ marginLeft: 20 }}
+          variant="contained"
+          onClick={() => {
+            selectedIds.forEach((id) => {
+              db.collection("users").doc(id).update({ blocked: true });
+            });
+          }}
+          color="primary"
+        >
+          Block
+        </Button>
+        <Button
+          style={{ marginLeft: 20 }}
+          variant="contained"
+          onClick={() => {
+            selectedIds.forEach((id) => {
+              db.collection("users").doc(id).update({ blocked: false });
+            });
+          }}
+          color="primary"
+        >
+          Unblock
+        </Button>
+      </div>
     </div>
   );
 }

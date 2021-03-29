@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core";
 import MenuBar from "../../components/menubar/MenuBar";
 import HomeIcon from "@material-ui/icons/Home";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import LibraryBooksIcon from "@material-ui/icons/LibraryBooks";
 import NavigationDrawer from "../../components/navigationdrawer/NavigationDrawer";
 import SupervisorAccountIcon from "@material-ui/icons/SupervisorAccount";
@@ -12,7 +12,8 @@ import Students from "./Pages/Students";
 import Dashboard from "./Pages/Dashboard";
 import Courses from "./Pages/Courses";
 import Staff from "./Pages/Staff";
-import FirebaseApp from "../../firebase";
+import Masters from "./Pages/Masters";
+import ListAltIcon from "@material-ui/icons/ListAlt";
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -69,6 +70,9 @@ export default function AdminDashboard({ user }) {
               <Route path="/student">
                 <Students user={user} />
               </Route>
+              <Route path="/masters">
+                <Masters user={user} />
+              </Route>
               <Route path="/">
                 <Dashboard user={user} />
               </Route>
@@ -85,11 +89,24 @@ const Menus = [
     path: "/",
     icon: <HomeIcon />,
   },
-  { name: "Courses", path: "/courses", icon: <LibraryBooksIcon /> },
-  { name: "Staff", path: "/staff", icon: <SupervisorAccountIcon /> },
+  {
+    name: "Courses",
+    path: "/courses",
+    icon: <LibraryBooksIcon />,
+  },
+  {
+    name: "Staff",
+    path: "/staff",
+    icon: <SupervisorAccountIcon />,
+  },
   {
     name: "Students",
     path: "/student",
     icon: <PersonIcon />,
+  },
+  {
+    name: "Masters",
+    path: "/masters",
+    icon: <ListAltIcon />,
   },
 ];
