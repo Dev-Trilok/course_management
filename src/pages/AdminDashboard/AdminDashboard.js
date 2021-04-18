@@ -1,6 +1,5 @@
 import React from "react";
 import clsx from "clsx";
-import { makeStyles } from "@material-ui/core";
 import MenuBar from "../../components/menubar/MenuBar";
 import HomeIcon from "@material-ui/icons/Home";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
@@ -8,12 +7,14 @@ import LibraryBooksIcon from "@material-ui/icons/LibraryBooks";
 import NavigationDrawer from "../../components/navigationdrawer/NavigationDrawer";
 import SupervisorAccountIcon from "@material-ui/icons/SupervisorAccount";
 import PersonIcon from "@material-ui/icons/Person";
-import Students from "./Pages/Students";
-import Dashboard from "./Pages/Dashboard";
-import Courses from "./Pages/Courses";
-import Staff from "./Pages/Staff";
-import Masters from "./Pages/Masters";
+import Students from "./pages/Students";
+import Dashboard from "./pages/Dashboard";
+import Courses from "./pages/Courses";
+import Staff from "./pages/Staff";
 import ListAltIcon from "@material-ui/icons/ListAlt";
+import Masters from "./pages/masters/Masters";
+import { makeStyles } from "@material-ui/core";
+import AddMultipleStudent from "./pages/AddMultipleStudent";
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -72,6 +73,9 @@ export default function AdminDashboard({ user }) {
               </Route>
               <Route path="/masters">
                 <Masters user={user} />
+              </Route>
+              <Route path="/addMultipleStudents">
+                <AddMultipleStudent />
               </Route>
               <Route path="/">
                 <Dashboard user={user} />

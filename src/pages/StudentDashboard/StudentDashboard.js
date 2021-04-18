@@ -4,12 +4,12 @@ import { makeStyles } from "@material-ui/core";
 import MenuBar from "../../components/menubar/MenuBar";
 import NavigationDrawer from "../../components/navigationdrawer/NavigationDrawer";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import Courses from "./Pages/Courses";
-import Resources from "./Pages/Resources";
+import Courses from "./pages/Courses";
+import Resources from "./pages/Resources";
 import HomeIcon from "@material-ui/icons/Home";
 import MenuBookIcon from "@material-ui/icons/MenuBook";
 import LibraryBooksIcon from "@material-ui/icons/LibraryBooks";
-import Dashboard from "./Pages/Dashboard";
+import Dashboard from "./pages/Dashboard";
 const useStyles = makeStyles((theme) => ({
   content: {
     flexGrow: 1,

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import FirebaseApp from "../../../firebase";
 import { DataGrid, GridColDef } from "@material-ui/data-grid";
-import EditStaffDialog from "../Components/EditStaffDialog";
-import AddStaffDialog from "../Components/AddStaffDialog";
+import EditStaffDialog from "../components/EditStaffDialog";
+import AddStaffDialog from "../components/AddStaffDialog";
 import { Button, Typography } from "@material-ui/core";
 
 const db = FirebaseApp.firestore();
@@ -54,7 +54,7 @@ export default function Staff() {
           columns={columns}
           rows={data}
           onSelectionModelChange={handleRowSelected}
-          // onRowClick={handleRowClick}
+          onRowClick={handleRowClick}
         />
       </div>
 

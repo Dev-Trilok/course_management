@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import FirebaseApp from "../../../firebase";
 import { DataGrid, GridColDef, GridToolbar } from "@material-ui/data-grid";
-import EditStaffDialog from "../Components/EditStaffDialog";
-import AddStudentDialog from "../Components/AddStudentDialog";
+import EditStaffDialog from "../components/EditStaffDialog";
+import AddStudentDialog from "../components/AddStudentDialog";
 import { Button, Typography } from "@material-ui/core";
-import TransferList from "../Components/TransferList";
+import TransferList from "../components/TransferList";
+import { Link } from "react-router-dom";
 
 const db = FirebaseApp.firestore();
 
@@ -43,12 +44,12 @@ export default function Students() {
     setOpenEditStudentDialog(true);
   };
   const courses = {
-    type: 'string',
+    type: "string",
     width: 130,
     valueFormatter: ({ value }) => value.con,
-    cellClassName: 'font-tabular-nums',
+    cellClassName: "font-tabular-nums",
   };
-  
+
   return (
     <div>
       <div style={{ height: "80vh", width: "100%" }}>
@@ -68,7 +69,6 @@ export default function Students() {
           }}
         />
       </div>
-
       {openEditStudentDialog && (
         <EditStaffDialog
           open={openEditStudentDialog}
@@ -77,6 +77,7 @@ export default function Students() {
         />
       )}
       <AddStudentDialog open={openAddStudent} setOpen={setOpenAddStudent} />
+
       <br />
       <br />
       <div style={{ textAlign: "center" }}>
@@ -88,6 +89,15 @@ export default function Students() {
           color="primary"
         >
           Add New
+        </Button>
+        <Button
+          style={{ marginLeft: 20 }}
+          variant="contained"
+          component={Link}
+          to={"/addMultipleStudents"}
+          color="primary"
+        >
+          Add Multiple
         </Button>
         <Button
           style={{ marginLeft: 20 }}

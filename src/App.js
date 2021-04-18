@@ -8,10 +8,10 @@ import {
   createMuiTheme,
   ThemeProvider,
 } from "@material-ui/core";
-import SignIn from "./pages/SignIn/SignIn";
-import StaffDashboard from "./pages/StaffDashboard/StaffDashboard";
-import StudentDashboard from "./pages/StudentDashboard/StudentDashboard";
-import AdminDashboard from "./pages/AdminDashboard/AdminDashboard";
+import SignIn from "./pages/signin/SignIn";
+import StaffDashboard from "./pages/staffdashboard/StaffDashboard";
+import StudentDashboard from "./pages/studentdashboard/StudentDashboard";
+import AdminDashboard from "./pages/admindashboard/AdminDashboard";
 import UserContext from "./context/UserContext";
 import FirebaseApp from "./firebase";
 const useStyles = makeStyles((theme) => ({
@@ -44,7 +44,7 @@ function App() {
     () =>
       createMuiTheme({
         palette: {
-          type: !prefersDarkMode ? "dark" : "light",
+          type: prefersDarkMode ? "dark" : "light",
         },
       }),
     [prefersDarkMode]

@@ -11,10 +11,12 @@ import {
   MenuItem,
   Checkbox,
   FormControlLabel,
+  InputLabel,
+  FormLabel,
   Typography,
 } from "@material-ui/core";
 import FirebaseApp from "../../../firebase";
-import SelectItem from "../../../components/selectitem/SelectItem";
+import TransferList from "./TransferList";
 
 const db = FirebaseApp.firestore();
 export default function AddStaffDialog({ open, setOpen }) {
@@ -24,6 +26,8 @@ export default function AddStaffDialog({ open, setOpen }) {
 
   const [department, setDepartment] = React.useState("");
   const [departments, setDepartments] = React.useState([]);
+  const [semester, setSemester] = React.useState("");
+  const [courses, setCourses] = React.useState([]);
   React.useEffect(() => {
     db.collection("departments")
       .get()
@@ -41,7 +45,9 @@ export default function AddStaffDialog({ open, setOpen }) {
         password: e.target.password.value,
         department: department,
         requestPassword: requestPassword,
-        role: "staff",
+        semester: semester,
+        role: "student",
+        courses: courses,
         blocked: false,
         id: e.target.username.value,
       })
@@ -51,13 +57,14 @@ export default function AddStaffDialog({ open, setOpen }) {
         });
       });
   };
+
   return (
     <Dialog
       open={open}
       onClose={handleClose}
       aria-labelledby="form-dialog-title"
     >
-      <DialogTitle id="form-dialog-title">Add New Staff</DialogTitle>
+      <DialogTitle id="form-dialog-title">Add New Student</DialogTitle>
       <form onSubmit={handleAdd}>
         <DialogContent>
           <TextField
@@ -85,13 +92,42 @@ export default function AddStaffDialog({ open, setOpen }) {
             type="password"
             fullWidth
           />
+          <TextField
+            variant="outlined"
+            margin="Semester"
+            id="semester"
+            label="Semester"
+            type="semester"
+            value={semester}
+            onChange={(e) => {
+              setSemester(e.target.value);
+            }}
+            fullWidth
+          />
 
-          <SelectItem
+          <br />
+          <br />
+          <Typography gutterBottom>Department :</Typography>
+          <Select
             id="department"
             title="Department"
             value={department}
-            setValue={setDepartment}
-            listItems={departments}
+            onChange={(e) => {
+              setDepartment(e.target.value);
+            }}
+            fullWidth
+          >
+            {departments.map((d, i) => (
+              <MenuItem key={i} value={d}>
+                {d}
+              </MenuItem>
+            ))}
+          </Select>
+          <TransferList
+            semester={semester}
+            department={department}
+            choosen={courses}
+            setChoosen={setCourses}
           />
           <br />
           <br />

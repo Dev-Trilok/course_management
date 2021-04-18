@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { DataGrid } from "@material-ui/data-grid";
-import FirebaseApp from "../../../firebase";
+import FirebaseApp from "../../../../firebase";
 
 import {
   Dialog,
@@ -10,19 +10,17 @@ import {
   DialogActions,
   Button,
   Typography,
-  IconButton,
 } from "@material-ui/core";
 import { useMediaQuery } from "react-responsive";
-import AddIcon from "@material-ui/icons/Add";
 const db = FirebaseApp.firestore();
 
-export default function Masters() {
+export default function DepartmentMaster() {
   const [openAddDepartment, setOpenAddDepartment] = useState(false);
   const [openEditDepartment, setOpenEditDepartment] = useState(false);
   const [selectedDepartment, setSelectedDepartment] = useState(null);
   const departmentColumns = [
     { field: "id", headerName: "Id" },
-    { field: "name", headerName: "Name" },
+    { field: "name", headerName: "Name", wdidth: 300 },
   ];
   const isDesktopOrLaptop = useMediaQuery({
     query: "(min-width: 1224px)",
@@ -52,9 +50,9 @@ export default function Masters() {
   };
 
   return (
-    <div>
+    <div style={{ float: "left", marginLeft: 20 }}>
       <div
-        style={{ height: "40vh", width: isDesktopOrLaptop ? "40vw" : "100vw" }}
+        style={{ height: "40vh", width: isDesktopOrLaptop ? "46vw" : "100vw" }}
       >
         <Typography variant="h6" gutterBottom>
           Departments Master :
@@ -77,15 +75,16 @@ export default function Masters() {
         </div>
 
         <DataGrid
-          hideFooterPagination
           columns={departmentColumns}
           rows={data}
-          checkboxSelection
+          autoHeight
+          hideFooterPagination
           disableSelectionOnClick
           onSelectionModelChange={handleDepartmentSelectionChanged}
           onRowClick={handleDepartmentRowClicked}
         />
       </div>
+      <br />
       {openEditDepartment && (
         <EditDepartmentName
           open={openEditDepartment}
@@ -102,7 +101,6 @@ export default function Masters() {
     </div>
   );
 }
-
 const EditDepartmentName = ({ open, setOpen, department }) => {
   const [name, setName] = useState(department.row.name);
   const [id] = useState(department.row.id);

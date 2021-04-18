@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import CourseCard from "../Components/CourseCard";
+import CourseCard from "../components/CourseCard";
 import { Grid } from "@material-ui/core";
 
 export default function Dashboard({ user }) {

@@ -4,28 +4,21 @@ import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import {
-  Select,
-  MenuItem,
-  Checkbox,
-  FormControlLabel,
-  InputLabel,
-  FormLabel,
-  Typography,
-} from "@material-ui/core";
+import { Checkbox, FormControlLabel } from "@material-ui/core";
 import FirebaseApp from "../../../firebase";
 import TransferList from "./TransferList";
+import SelectItem from "../../../components/selectitem/SelectItem";
 
 const db = FirebaseApp.firestore();
 export default function AddStaffDialog({ open, setOpen }) {
   const handleClose = () => {
     setOpen(false);
   };
-
   const [department, setDepartment] = React.useState("");
   const [departments, setDepartments] = React.useState([]);
+  const [Class, setClass] = React.useState("None");
+  const [classes, setClasses] = React.useState([]);
   const [semester, setSemester] = React.useState("");
   const [courses, setCourses] = React.useState([]);
   React.useEffect(() => {
@@ -34,7 +27,14 @@ export default function AddStaffDialog({ open, setOpen }) {
       .then((value) => {
         setDepartments(value.docs.map((d) => d.data().name));
       });
-  }, []);
+    db.collection("classes")
+      .where("department", "==", department)
+      .get()
+      .then((value) => {
+        setClasses(value.docs.map((d) => d.data().name));
+      });
+  }, [department]);
+
   const [requestPassword, setRequestPassword] = React.useState(false);
   const handleAdd = (e) => {
     e.preventDefault();
@@ -49,10 +49,13 @@ export default function AddStaffDialog({ open, setOpen }) {
         role: "student",
         courses: courses,
         blocked: false,
+        class: Class,
         id: e.target.username.value,
       })
       .then((value) => {
         value.update({ id: value.id }).then(() => {
+          setDepartment("");
+          setSemester("");
           setOpen(false);
         });
       });
@@ -94,7 +97,7 @@ export default function AddStaffDialog({ open, setOpen }) {
           />
           <TextField
             variant="outlined"
-            margin="Semester"
+            margin="dense"
             id="semester"
             label="Semester"
             type="semester"
@@ -107,22 +110,21 @@ export default function AddStaffDialog({ open, setOpen }) {
 
           <br />
           <br />
-          <Typography gutterBottom>Department :</Typography>
-          <Select
+          <SelectItem
             id="department"
             title="Department"
             value={department}
-            onChange={(e) => {
-              setDepartment(e.target.value);
-            }}
-            fullWidth
-          >
-            {departments.map((d, i) => (
-              <MenuItem key={i} value={d}>
-                {d}
-              </MenuItem>
-            ))}
-          </Select>
+            setValue={setDepartment}
+            listItems={departments}
+          />
+          <br />
+          <SelectItem
+            id="class"
+            title="Class"
+            value={Class}
+            setValue={setClass}
+            listItems={classes}
+          />
           <TransferList
             semester={semester}
             department={department}

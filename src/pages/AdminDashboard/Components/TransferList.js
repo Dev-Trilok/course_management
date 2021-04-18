@@ -66,7 +66,8 @@ export default function TransferList({
           })
         );
       });
-  }, [semester, department]);
+    setChoosen([]);
+  }, [semester, department, setChoosen]);
 
   const coursesChecked = intersection(checked, courses);
   const choosenChecked = intersection(checked, choosen);
